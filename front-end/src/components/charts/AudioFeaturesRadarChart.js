@@ -47,7 +47,7 @@ function RadarChart(props) {
         animate={true}
         motionStiffness={90}
         motionDamping={15}
-        isInteractive={true}
+        isInteractive={false}
         legends={[
             {
                 anchor: 'top-left',

@@ -7,7 +7,17 @@ To prevent many API requests to the web API caching is implemented using flask.
 
 ## Run the app
 
-- Replace the temp values in `api/config.py` with your Spotify client details
-- `yarn start`
-- `yarn start api`
-- Open browser and go to `https://localhost:3000`
+Create a .env file in the root directory with your spotify client id and secret
+```
+CLIENT_ID=VALUE
+CLIENT_SECRET=VALUE
+```
+Instantiate the app via docker
+> `$ docker-compose up`
+
+Initialize the flask database 
+> `$ docker exec -it api_local /bin/bash`
+
+> `$ flask init-db`
+
+Open browser and go to `https://localhost:3000`

@@ -135,7 +135,7 @@ class Home extends Component {
                         container
                         className={classes.grid}
                         direction="row"
-                        justify="center"
+                        justifyContent="center"
                         alignItems="flex-start"
                         spacing={3}
                     >

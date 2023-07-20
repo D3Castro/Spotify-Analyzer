@@ -1,15 +1,12 @@
-import functools
+import os
 import requests
 from urllib.parse import quote
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, json, jsonify, make_response
+    Blueprint, g, request, session, json, jsonify, make_response
 )
-from werkzeug.security import check_password_hash, generate_password_hash
 
 from .db import get_db
-
-from .config import config
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -33,7 +30,7 @@ auth_query_parameters = {
     "scope": SCOPE,
     # "state": STATE,
     # "show_dialog": SHOW_DIALOG_str,
-    "client_id": config['client_id']
+    "client_id": os.getenv('CLIENT_ID')
 }
 
 
@@ -46,8 +43,8 @@ def auth_payload(token):
         "grant_type": "authorization_code",
         "code": str(token),
         "redirect_uri": REDIRECT_URI,
-        "client_id": config['client_id'],
-        "client_secret": config['client_secret'],
+        "client_id": os.getenv('CLIENT_ID'),
+        "client_secret": os.getenv('CLIENT_SECRET'),
     }
 
 

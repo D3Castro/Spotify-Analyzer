@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
 
 class PublicRoute extends Component {
 
@@ -11,7 +11,7 @@ class PublicRoute extends Component {
     return (
       <Route {...rest} render={props => (
         user.id && restricted
-          ? <Redirect to="/home" {...props}/>
+          ? <Navigate to="/home" {...props}/>
           : <Component redirectToSpotify={redirectToSpotify} {...props} />
       )} />
     );

@@ -10,7 +10,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 export default function UserDropDown(props) {
   const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const anchorRef = React.createRef();
   const handleLogout = props.handleLogout;
 
   const handleToggle = () => {

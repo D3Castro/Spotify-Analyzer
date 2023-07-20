@@ -32,7 +32,7 @@ class LandingPage extends React.Component {
           container
           className={classes.landing}
           direction="column"
-          justify="center"
+          justifyContent="center"
           alignItems="center"
         >
           <Grid className={classes.loginContainer} item xs={6}>
@@ -42,7 +42,7 @@ class LandingPage extends React.Component {
             <Typography variant="h5" align="center" color="textSecondary" paragraph>
               Analyzes your Spotify data!
             </Typography>
-            <Grid container spacing={4} justify="center">
+            <Grid container spacing={4} justifyContent="center">
               <Grid item>
                 <Button variant="contained" color="primary" onClick={redirectToSpotify}>
                   Log in with Spotify

@@ -1,5 +1,5 @@
 import React, { Component, Suspense, lazy } from 'react';
-import { Switch } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -9,15 +9,17 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { registerSpotify } from '../../util/auth';
 import { AuthDataContext } from "./AuthProvider";
 import { getUrlParams } from '../../util/url';
-import Redirect from '../common/Redirect';
-import PrivateRoute from './PrivateRoute';
-import PublicRoute from './PublicRoute';
+import Redirect from './Redirect';
 import DarkTheme from '../../themes/dark';
 import TopMenu from '../topmenu/TopMenu';
 import UserDropDown from '../dropdowns/UserDropDown';
 
 const Home = lazy(() => import('../home/Home'));
 const LandingPage = lazy(() => import('../landingpage/LandingPage'));
+
+const PrivateRoute = ({ auth: { isAuthenticated }, children }) => {
+  return isAuthenticated ? children : <Navigate to="/" replace />;
+};
 
 class Router extends Component {
   static contextType = AuthDataContext;
@@ -38,8 +40,8 @@ class Router extends Component {
 
     if (isLoading) {
       return (
-        <Backdrop>
-            <CircularProgress color="inherit" />
+        <Backdrop open={true}>
+            <CircularProgress color="inherit"/>
         </Backdrop>
       )
     }
@@ -57,14 +59,10 @@ class Router extends Component {
         <CssBaseline />
         <main>
             <Suspense fallback={<div>Loading...</div>}>
-              <Switch>
-                <PublicRoute path="/" exact
-                  restricted={true} user={user} redirectToSpotify={redirectToSpotify} component={LandingPage}
-                />
-                <PrivateRoute path="/home" exact
-                  user={user} component={Home}
-                />
-              </Switch>
+              <Routes>
+                <Route path="/" restricted={true} user={user} redirectToSpotify={redirectToSpotify} element={<LandingPage />} />
+                <Route path="/home" element={<PrivateRoute auth={{ isAuthenticated: false }}> <Home user={user} /> </PrivateRoute>} />
+              </Routes>
             </Suspense>
         </main>
       </MuiThemeProvider>
