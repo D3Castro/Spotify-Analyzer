@@ -14,4 +14,4 @@ EXPOSE 3000
 
 ENTRYPOINT [ "npm" ]
 
-CMD ["start"]
+CMD ["install", "--legacy-peer-deps;", "start"]

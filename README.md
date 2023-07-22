@@ -12,6 +12,9 @@ Create a .env file in the root directory with your spotify client id and secret
 CLIENT_ID=VALUE
 CLIENT_SECRET=VALUE
 ```
+Install node modules
+> `$ npm i -f`
+
 Instantiate the app via docker
 > `$ docker-compose up`
 
