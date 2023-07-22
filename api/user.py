@@ -1,12 +1,10 @@
-import json
 import requests
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, json, jsonify, make_response
+    Blueprint, request, session, jsonify
 )
 from markupsafe import escape
 
-from .db import get_db
 from .models.error import Error
 from .cache import cache
 

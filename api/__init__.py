@@ -5,7 +5,26 @@ from flask import Flask
 from flask_cors import CORS
 
 from .cache import cache
+from logging.config import dictConfig
 
+dictConfig(
+    {
+        "version": 1,
+        "formatters": {
+            "default": {
+                "format": "[%(asctime)s] %(levelname)s in %(module)s: %(message)s",
+            }
+        },
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+                "formatter": "default",
+            }
+        },
+        "root": {"level": "DEBUG", "handlers": ["console"]},
+    }
+)
 
 def create_app(test_config=None):
     # create and configure the app
@@ -14,15 +33,15 @@ def create_app(test_config=None):
         DEBUG=True,
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        SESSION_COOKIE_SECURE=True,
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE='Lax',
     )
     cache.init_app(app)
 
     CORS(app)
 
     if test_config is None:
-        # load the instance config, if it exists, when not testing
-        app.config.from_pyfile('config.py', silent=True)
-    else:
         # load the test config if passed in
         app.config.from_mapping(test_config)
 

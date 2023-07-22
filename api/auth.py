@@ -1,15 +1,12 @@
-import functools
+import os
 import requests
 from urllib.parse import quote
 
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, json, jsonify, make_response
+    Blueprint, g, request, session, json, jsonify, make_response, current_app
 )
-from werkzeug.security import check_password_hash, generate_password_hash
 
 from .db import get_db
-
-from .config import config
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -33,7 +30,7 @@ auth_query_parameters = {
     "scope": SCOPE,
     # "state": STATE,
     # "show_dialog": SHOW_DIALOG_str,
-    "client_id": config['client_id']
+    "client_id": os.getenv('CLIENT_ID')
 }
 
 
@@ -46,8 +43,8 @@ def auth_payload(token):
         "grant_type": "authorization_code",
         "code": str(token),
         "redirect_uri": REDIRECT_URI,
-        "client_id": config['client_id'],
-        "client_secret": config['client_secret'],
+        "client_id": os.getenv('CLIENT_ID'),
+        "client_secret": os.getenv('CLIENT_SECRET'),
     }
 
 
@@ -69,34 +66,40 @@ def index():
 
 @bp.route('/user', methods=('GET', 'POST'))
 def get_user():
-    if request.method == 'POST':
-        data = request.json
-        auth_token = data['code']
+    try:
+        if request.method == 'POST':
+            data = request.json
+            auth_token = data['code']
 
-        post_request = requests.post(SPOTIFY_TOKEN_URL, data=auth_payload(auth_token))
+            post_request = requests.post(SPOTIFY_TOKEN_URL, data=auth_payload(auth_token))
 
-        response_data = json.loads(post_request.text)
-        access_token = response_data["access_token"]
-        refresh_token = response_data["refresh_token"]
+            response_data = json.loads(post_request.text)
+            has_access_token = "access_token" in response_data
+            current_app.logger.info(f"{type(response_data)} {has_access_token} {response_data}")
+            access_token = response_data["access_token"]
+            refresh_token = response_data["refresh_token"]
 
-        session['access_token'] = access_token
-        session['refresh_token'] = refresh_token
+            session['access_token'] = access_token
+            session['refresh_token'] = refresh_token
 
-    access_token = session.get('access_token', None)
+        access_token = session.get('access_token', None)
 
-    profile_data = get_user_profile(access_token)
+        profile_data = get_user_profile(access_token)
 
-    if 'error' in profile_data:
-        return 'Not logged in'
+        if 'error' in profile_data:
+            return 'Not logged in'
 
-    session['user_id'] = profile_data['id']
+        session['user_id'] = profile_data['id']
 
-    create_user(profile_data)
+        create_user(profile_data)
 
-    res = make_response(jsonify(profile_data), 200)
-    res.set_cookie('access_token', access_token)
+        res = make_response(jsonify(profile_data), 200)
+        res.set_cookie('access_token', access_token)
 
-    return res
+        return res
+    except Exception as e:
+            current_app.logger.error(e)
+            raise e
 
 
 def create_user(data):
