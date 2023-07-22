@@ -1,8 +1,9 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import { Navigate } from "react-router-dom";
+import { withStyles } from '@mui/styles';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 
 import backgroundImg from '../../static/media/backgrounds/landingPageBg.jpg';
 
@@ -25,7 +26,11 @@ const styles = theme => ({
 class LandingPage extends React.Component {
 
   render() {
-      const { redirectToSpotify, classes } = this.props;
+      const { user, redirectToSpotify, classes } = this.props;
+
+      if (user && user.id) {
+        return <Navigate to="/home" replace />
+      }
 
       return (
         <Grid

@@ -1,10 +1,10 @@
 import React, { Component, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import { ThemeProvider as MuiThemeProvider } from '@mui/styles';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import { registerSpotify } from '../../util/auth';
 import { AuthDataContext } from "./AuthProvider";
@@ -17,8 +17,8 @@ import UserDropDown from '../dropdowns/UserDropDown';
 const Home = lazy(() => import('../home/Home'));
 const LandingPage = lazy(() => import('../landingpage/LandingPage'));
 
-const PrivateRoute = ({ auth: { isAuthenticated }, children }) => {
-  return isAuthenticated ? children : <Navigate to="/" replace />;
+const PrivateRoute = ({ user, children }) => {
+  return user.id ? children : <Navigate to="/" replace />;
 };
 
 class Router extends Component {
@@ -60,8 +60,8 @@ class Router extends Component {
         <main>
             <Suspense fallback={<div>Loading...</div>}>
               <Routes>
-                <Route path="/" restricted={true} user={user} redirectToSpotify={redirectToSpotify} element={<LandingPage />} />
-                <Route path="/home" element={<PrivateRoute auth={{ isAuthenticated: false }}> <Home user={user} /> </PrivateRoute>} />
+                <Route path="/" element={<LandingPage user={user} redirectToSpotify={redirectToSpotify} />} />
+                <Route path="/home" element={<PrivateRoute user={user}> <Home user={user} /> </PrivateRoute>} />
               </Routes>
             </Suspense>
         </main>

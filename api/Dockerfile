@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0;", "flask", "init-db"]
+CMD ["python3", "-m", "flask", "init-db;", "python3", "-m", "flask", "run", "--host=0.0.0.0", "--debug"]

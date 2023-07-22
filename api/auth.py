@@ -3,7 +3,7 @@ import requests
 from urllib.parse import quote
 
 from flask import (
-    Blueprint, g, request, session, json, jsonify, make_response
+    Blueprint, g, request, session, json, jsonify, make_response, current_app
 )
 
 from .db import get_db
@@ -66,34 +66,40 @@ def index():
 
 @bp.route('/user', methods=('GET', 'POST'))
 def get_user():
-    if request.method == 'POST':
-        data = request.json
-        auth_token = data['code']
+    try:
+        if request.method == 'POST':
+            data = request.json
+            auth_token = data['code']
 
-        post_request = requests.post(SPOTIFY_TOKEN_URL, data=auth_payload(auth_token))
+            post_request = requests.post(SPOTIFY_TOKEN_URL, data=auth_payload(auth_token))
 
-        response_data = json.loads(post_request.text)
-        access_token = response_data["access_token"]
-        refresh_token = response_data["refresh_token"]
+            response_data = json.loads(post_request.text)
+            has_access_token = "access_token" in response_data
+            current_app.logger.info(f"{type(response_data)} {has_access_token} {response_data}")
+            access_token = response_data["access_token"]
+            refresh_token = response_data["refresh_token"]
 
-        session['access_token'] = access_token
-        session['refresh_token'] = refresh_token
+            session['access_token'] = access_token
+            session['refresh_token'] = refresh_token
 
-    access_token = session.get('access_token', None)
+        access_token = session.get('access_token', None)
 
-    profile_data = get_user_profile(access_token)
+        profile_data = get_user_profile(access_token)
 
-    if 'error' in profile_data:
-        return 'Not logged in'
+        if 'error' in profile_data:
+            return 'Not logged in'
 
-    session['user_id'] = profile_data['id']
+        session['user_id'] = profile_data['id']
 
-    create_user(profile_data)
+        create_user(profile_data)
 
-    res = make_response(jsonify(profile_data), 200)
-    res.set_cookie('access_token', access_token)
+        res = make_response(jsonify(profile_data), 200)
+        res.set_cookie('access_token', access_token)
 
-    return res
+        return res
+    except Exception as e:
+            current_app.logger.error(e)
+            raise e
 
 
 def create_user(data):

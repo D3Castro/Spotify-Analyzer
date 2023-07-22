@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Paper from '@material-ui/core/Paper';
-import Divider from '@material-ui/core/Divider';
+import { withStyles } from '@mui/styles';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
+import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
 
 import { getUserTopArtists, getUserTopTracks, getUserTopTracksAudioFeatures } from '../../util/user';
 import ArtistList from '../lists/ArtistList';

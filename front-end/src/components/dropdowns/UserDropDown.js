@@ -1,12 +1,12 @@
 import React from 'react';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Button from '@material-ui/core/Button';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Button from '@mui/material/Button';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export default function UserDropDown(props) {
   const [open, setOpen] = React.useState(false);
@@ -42,7 +42,7 @@ export default function UserDropDown(props) {
     }
 
     prevOpen.current = open;
-  }, [open]);
+  }, [prevOpen, open, anchorRef]);
 
   return (
       <div>

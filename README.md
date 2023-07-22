@@ -18,6 +18,6 @@ Instantiate the app via docker
 Initialize the flask database 
 > `$ docker exec -it api_local /bin/bash`
 
-> `$ flask init-db`
+> `$ python3 -m flask init-db`
 
 Open browser and go to `https://localhost:3000`

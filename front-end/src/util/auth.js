@@ -13,7 +13,7 @@ export function getLoginRedirect() {
     axios
       .get('/auth/redirect-spotify')
       .then(res => resolve(res.data), err => reject(err));
-  });
+  }).catch((error) => {});
 }
 
 export function registerSpotify(code) {
@@ -24,7 +24,7 @@ export function registerSpotify(code) {
         res => resolve(res.data),
         err => reject(err)
       );
-  });
+  }).catch((error) => {});
 }
 
 export function getSpotifyUser() {
@@ -35,7 +35,7 @@ export function getSpotifyUser() {
         res => resolve(res.data),
         err => reject(err)
       );
-  });
+  }).catch((error) => {});
 }
 
 export function logout() {
@@ -46,5 +46,5 @@ export function logout() {
         res => resolve(res),
         err => reject(err)
       );
-  });
+  }).catch((error) => {});
 }
