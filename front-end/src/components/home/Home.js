@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { withStyles } from '@mui/styles';
+import { styled } from "@mui/system";
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -12,6 +12,7 @@ import ArtistList from '../lists/ArtistList';
 import TrackList from '../lists/TrackList';
 import TimeRangeDropDown from '../dropdowns/TimeRangeDropDown';
 import AudioFeaturesRadarChart from '../charts/AudioFeaturesRadarChart';
+import { Container } from '@mui/material';
 
 const timeRanges = {
     'Past 4 Weeks': 'short_term',
@@ -19,7 +20,7 @@ const timeRanges = {
     'All Time': 'long_term'
 }
 
-const styles = theme => ({
+const styles = styled(({ theme }) => ({
     root: {
         display: 'flex',
     },
@@ -36,7 +37,7 @@ const styles = theme => ({
     chartWrapper: {
         padding: theme.spacing(2),
     },
-});
+}));
 
 
 class Home extends Component {
@@ -122,25 +123,23 @@ class Home extends Component {
     }
 
     render() {
-        const { classes } = this.props;
-
         const artistTimeRangeDropdown = <TimeRangeDropDown timeRange={this.state.artistTimeRange} handleTimeRangeChange={this.handleArtistTimeRangeChange} timeRanges={timeRanges}/>
         const trackTimeRangeDropdown = <TimeRangeDropDown timeRange={this.state.trackTimeRange} handleTimeRangeChange={this.handleTrackTimeRangeChange} timeRanges={timeRanges}/>
         const audioFeatureTimeRangeDropdown = <TimeRangeDropDown timeRange={this.state.audioFeaturesTimeRange} handleTimeRangeChange={this.handleAudioFeatureTimeRangeChange} timeRanges={timeRanges}/>
 
         return (
-            <div className={classes.root}>
-                <main className={classes.content}>
+            <Container sx={styles.root}>
+                <Container sx={styles.content}>
                     <Grid
                         container
-                        className={classes.grid}
+                        sx={styles.grid}
                         direction="row"
                         justifyContent="center"
                         alignItems="flex-start"
                         spacing={3}
                     >
                         <Grid item xs={5}>
-                            <Paper>
+                            <Paper sx={styles.listWrapper}>
                                 <div align="center" display="inline">
                                     <Typography variant="h3">
                                         Top Artists
@@ -148,7 +147,7 @@ class Home extends Component {
                                     {artistTimeRangeDropdown}
                                 </div>
                                 <Divider />
-                                <div className={classes.listWrapper} align="center">
+                                <div align="center">
                                     {this.state.artists
                                         ? <ArtistList artists={this.state.artists} />
                                         : <CircularProgress />}
@@ -157,7 +156,7 @@ class Home extends Component {
                         </Grid>
 
                         <Grid item xs={5}>
-                            <Paper>
+                            <Paper sx={styles.listWrapper}>
                                 <div align="center" display="inline">
                                     <Typography variant="h3">
                                         Top Tracks
@@ -165,7 +164,7 @@ class Home extends Component {
                                     {trackTimeRangeDropdown}
                                 </div>
                                 <Divider />
-                                <div className={classes.listWrapper} align="center">
+                                <div align="center">
                                     {this.state.tracks
                                         ? <TrackList tracks={this.state.tracks} />
                                         : <CircularProgress />}
@@ -174,7 +173,7 @@ class Home extends Component {
                         </Grid>
 
                         <Grid item xs={6}>
-                            <Paper className={classes.chartWrapper}>
+                            <Paper sx={styles.chartWrapper}>
                                 <div align="center" >
                                     <Typography variant="h3">
                                         Top Tracks Audio Analysis
@@ -190,10 +189,10 @@ class Home extends Component {
                             </Paper>
                         </Grid>
                     </Grid>
-                </main>
-            </div>
+                </Container>
+            </Container>
         );
     }
 }
 
-export default withStyles(styles, { withTheme: true })(Home);
+export default Home;

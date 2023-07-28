@@ -1,8 +1,9 @@
 import React from 'react';
-import { makeStyles } from '@mui/styles';
+import { styled } from "@mui/system";
 import { ResponsiveRadar } from '@nivo/radar';
+import Container from '@mui/material/Container';
 
-const useStyles = makeStyles((theme) => ({
+const styles = styled(() => ({
   radarChart: {
     height: props => props.height,
     weidth: props => props.width,
@@ -74,12 +75,11 @@ function RadarChart(props) {
 }
 
 export default function AudioFeaturesRadarChart(props) {
-  const classes = useStyles(props);
   const data = props.data;
 
   return (
-      <div className={classes.radarChart}>
+      <Container sx={styles.radarChart}>
         <RadarChart data={data} />
-      </div>
+      </Container>
   );
 }

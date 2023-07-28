@@ -6,8 +6,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.1",
-    "@mui/material": "^5.14.1",
-    "@mui/styles": "^5.14.1",
+    "@mui/material": "^5.14.2",
     "@nivo/pie": "^0.83.0",
     "@nivo/radar": "^0.83.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -41,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "web-vitals": "^3.4.0"
   }
 }

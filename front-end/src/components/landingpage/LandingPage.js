@@ -1,13 +1,13 @@
 import React from 'react';
 import { Navigate } from "react-router-dom";
-import { withStyles } from '@mui/styles';
+import { styled } from "@mui/system";
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 
 import backgroundImg from '../../static/media/backgrounds/landingPageBg.jpg';
 
-const styles = theme => ({
+const styles = styled(() => ({
   landing: {
     position: 'fixed',
     top: 0,
@@ -21,12 +21,12 @@ const styles = theme => ({
   loginContainer: {
     minWidth: 450,
   },
-});
+}));
 
 class LandingPage extends React.Component {
 
   render() {
-      const { user, redirectToSpotify, classes } = this.props;
+      const { user, redirectToSpotify } = this.props;
 
       if (user && user.id) {
         return <Navigate to="/home" replace />
@@ -35,12 +35,12 @@ class LandingPage extends React.Component {
       return (
         <Grid
           container
-          className={classes.landing}
+          sx={styles.landing}
           direction="column"
           justifyContent="center"
           alignItems="center"
         >
-          <Grid className={classes.loginContainer} item xs={6}>
+          <Grid sx={styles.loginContainer} item xs={6}>
             <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
               Spotify Analyzer
             </Typography>
@@ -60,4 +60,4 @@ class LandingPage extends React.Component {
   }
 }
 
-export default withStyles(styles)(LandingPage);
+export default LandingPage;
