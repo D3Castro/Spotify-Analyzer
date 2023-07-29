@@ -1,34 +1,22 @@
 import axios from 'axios';
 
-export function getUserTopArtists(timeRange) {
-  return new Promise((resolve, reject) => {
-    axios
-      .get('/user/top/artists?time_range=' + timeRange)
-      .then(
-        res => resolve(res.data),
-        err => reject(err)
-      );
-  });
+async function fetchData(endpoint, timeRange) {
+  try {
+    const res = await axios.get(`${endpoint}?time_range=${timeRange}`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
 }
 
-export function getUserTopTracks(timeRange) {
-  return new Promise((resolve, reject) => {
-    axios
-      .get('/user/top/tracks?time_range=' + timeRange)
-      .then(
-        res => resolve(res.data),
-        err => reject(err)
-      );
-  });
+export async function getUserTopArtists(timeRange) {
+  return fetchData('/user/top/artists', timeRange);
 }
 
-export function getUserTopTracksAudioFeatures(timeRange) {
-  return new Promise((resolve, reject) => {
-    axios
-      .get('/user/top/tracks/audio-features?time_range=' + timeRange)
-      .then(
-        res => resolve(res.data),
-        err => reject(err)
-      );
-  });
+export async function getUserTopTracks(timeRange) {
+  return fetchData('/user/top/tracks', timeRange);
+}
+
+export async function getUserTopTracksAudioFeatures(timeRange) {
+  return fetchData('/user/top/tracks/audio-features', timeRange);
 }

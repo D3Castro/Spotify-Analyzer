@@ -1,9 +1,6 @@
 import os
-
 from flask import Flask
-
 from flask_cors import CORS
-
 from .cache import cache
 from logging.config import dictConfig
 
@@ -37,19 +34,14 @@ def create_app(test_config=None):
         SESSION_COOKIE_HTTPONLY=True,
         SESSION_COOKIE_SAMESITE='Lax',
     )
-    cache.init_app(app)
 
+    cache.init_app(app)
     CORS(app)
 
-    if test_config is None:
-        # load the test config if passed in
+    if test_config is not None:
         app.config.from_mapping(test_config)
 
-    # ensure the instance folder exists
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
+    os.makedirs(app.instance_path, exist_ok=True)
 
     from . import db
     db.init_app(app)

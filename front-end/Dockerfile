@@ -1,17 +1,23 @@
-FROM node:18-slim
+FROM node:18-slim AS builder
 
-WORKDIR /user/src/app 
+WORKDIR /user/src/app
 
-COPY ./package.json ./
+COPY package.json package-lock.json ./
 
-COPY ./package-lock.json ./
-
-RUN npm install --legacy-peer-deps
+RUN npm ci --quiet
 
 COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-ENTRYPOINT [ "npm" ]
+# Stage 2: Create the final production image
+FROM node:18-slim
 
-CMD ["install", "--legacy-peer-deps;", "start"]
+WORKDIR /user/src/app
+
+COPY --from=builder /user/src/app/package.json /user/src/app/package-lock.json ./
+COPY --from=builder /user/src/app/build ./build
+
+RUN npm ci --quiet --production
+
+CMD ["npm", "start"]

@@ -1,8 +1,9 @@
 export function getUrlParams() {
+  const urlSearchParams = new URLSearchParams(window.location.search);
   const vars = {};
-  window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, (m, key, value) => {
+  for (const [key, value] of urlSearchParams.entries()) {
     vars[key] = value;
-  });
+  }
   return vars;
 }
 

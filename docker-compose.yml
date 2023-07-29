@@ -2,22 +2,22 @@ version: "3.9"
 services:
   api:
     container_name: api_local
-    build:  ./api
+    build: ./api
     restart: always
     environment:
       - CLIENT_ID=${CLIENT_ID}
       - CLIENT_SECRET=${CLIENT_SECRET}
-    ports: 
-    - "5001:5000"
-    volumes: 
-    - ./api:/app
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./api:/app
   front-end:
     container_name: front_end_local
-    build: ./front-end 
+    build: ./front-end
     restart: always
-    ports: 
+    ports:
       - "3000:3000"
-    volumes: 
+    volumes:
       - ./front-end:/user/src/app
-    depends_on: 
+    depends_on:
       - api

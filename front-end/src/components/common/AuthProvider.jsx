@@ -1,67 +1,68 @@
 import React, { useState, useEffect, createContext } from 'react';
-import { getSpotifyUser, getLoginRedirect, logout } from '../../util/auth';
+import { getSpotifyUser, getLoginRedirect, logout, registerSpotify } from '../../util/auth';
+import { getUrlParams } from '../../util/url';
 
 const AuthDataContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [redirectUrl, setRedirectUrl] = useState(null);
+
+  const handleLogout = async () => {
+    try {
+      setIsLoading(true);
+      await logout();
+      setUser({});
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const redirectToSpotify = async () => {
+    try {
+      const redirect = await getLoginRedirect();
+      window.location.href = redirect;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
+    const params = getUrlParams();
+    const codeParam = params.code || null;
+
     const fetchData = async () => {
-      try {
-        const authData = await getSpotifyUser();
-        if (authData) {
-            setUser(authData);
+      setIsLoading(true);
+      if (codeParam) {
+        try {
+          const user = await registerSpotify(codeParam);
+          setUser(user);
+        } catch (error) {
+          console.error('Error during registration:', error);
         }
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setIsLoading(false);
+      } else {
+        try {
+          const authData = await getSpotifyUser();
+          if (authData) {
+            setUser(authData);
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
+      setIsLoading(false);
     };
 
     fetchData();
   }, []);
-
-  const handleLogin = (user) => {
-    setUser(user);
-  };
-
-  const handleLogout = () => {
-    const logoutUser = async () => {
-      try {
-        await logout();
-        setUser({});
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    logoutUser();
-  };
-
-  const redirectToSpotify = () => {
-    const redirect = async () => {
-      try {
-        const redirect = await getLoginRedirect();
-        setRedirectUrl(redirect);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    redirect();
-  };
 
   return (
     <AuthDataContext.Provider
       value={{
         user,
         isLoading,
-        redirectUrl,
-        onLogin: handleLogin,
         onLogout: handleLogout,
         redirectToSpotify,
       }}
