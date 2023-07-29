@@ -12,15 +12,10 @@ Create a .env file in the root directory with your spotify client id and secret
 CLIENT_ID=VALUE
 CLIENT_SECRET=VALUE
 ```
-Install node modules
-> `$ npm i -f`
+In the `front-end` directory install node modules
+> `$ npm i`
 
-Instantiate the app via docker
+In the `conf` directory instantiate the app via docker
 > `$ docker-compose up`
-
-Initialize the flask database 
-> `$ docker exec -it api_local /bin/bash`
-
-> `$ python3 -m flask init-db`
 
 Open browser and go to `https://localhost:3000`

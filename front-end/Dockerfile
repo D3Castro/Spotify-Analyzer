@@ -1,4 +1,4 @@
-FROM node:18-slim AS builder
+FROM node:18 AS builder
 
 WORKDIR /user/src/app
 
@@ -11,7 +11,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Create the final production image
-FROM node:18-slim
+FROM node:18-alpine
 
 WORKDIR /user/src/app
 

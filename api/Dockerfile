@@ -1,9 +1,8 @@
-FROM python:3.11-slim-buster
+FROM python:3.11-alpine
 
 WORKDIR /app
 
 ENV FLASK_APP=__init__.py \
-    FLASK_ENV=development \
     CLIENT_ID=${CLIENT_ID} \
     CLIENT_SECRET=${CLIENT_SECRET}
 
@@ -14,4 +13,5 @@ COPY . .
 
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
 ENTRYPOINT ["entrypoint.sh"]
