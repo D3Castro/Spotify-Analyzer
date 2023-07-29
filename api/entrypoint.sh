@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 python3 -m flask init-db
 

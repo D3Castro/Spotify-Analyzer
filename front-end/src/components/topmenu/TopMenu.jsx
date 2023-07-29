@@ -9,31 +9,32 @@ const styles = styled(() => ({
   appBar: {
     marginBottom: 10,
   },
-  userSection: {
-    marginLeft: 'auto',
-    display: 'flex',
-    alignItems: 'center',
-  },
   userName: {
-    marginLeft: 8,
+    marginLeft: 16,
   },
+}));
+
+const UserBar = styled('div')(({ theme }) => ({
+  marginLeft: 'auto',
+  display: 'flex',
+  alignItems: 'center',
 }));
 
 export default function TopMenu({ user, userDropDown }) {
   return (
     <AppBar position="sticky" sx={styles.appBar} pb={2}>
-      <Toolbar>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <Typography variant="h6" noWrap>
           Spotify Analyzer
         </Typography>
         {user?.id && (
-          <div sx={styles.userSection}>
+          <UserBar>
             <Typography variant="h6" noWrap sx={styles.userName}>
               Welcome, {user.display_name}
             </Typography>
             <Avatar alt="User Image" src={user.images[0]?.url} />
             {userDropDown}
-          </div>
+          </UserBar>
         )}
       </Toolbar>
     </AppBar>

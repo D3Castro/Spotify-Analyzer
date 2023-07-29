@@ -1,7 +1,5 @@
 import React, { useContext, Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
-import DarkTheme from '../../themes/dark';
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -25,7 +23,7 @@ const Router = () => {
   const userDropDown = <UserDropDown handleLogout={onLogout} />;
 
   return (
-    <ThemeProvider theme={DarkTheme}>
+    <>
       <TopMenu user={user} userDropDown={userDropDown} />
       <CssBaseline />
       <main>
@@ -42,7 +40,7 @@ const Router = () => {
           </Suspense>
         )}
       </main>
-    </ThemeProvider>
+    </>
   );
 };
 

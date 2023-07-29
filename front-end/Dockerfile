@@ -11,7 +11,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2: Create the final production image
-FROM node:18-alpine
+FROM node:18-slim
 
 WORKDIR /user/src/app
 

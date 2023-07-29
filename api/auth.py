@@ -58,8 +58,6 @@ def get_user():
         post_request = requests.post(SPOTIFY_TOKEN_URL, data=auth_payload(auth_token))
 
         response_data = json.loads(post_request.text)
-        has_access_token = "access_token" in response_data
-        current_app.logger.info(f"{type(response_data)} {has_access_token} {response_data}")
         session['access_token'] = response_data.get("access_token")
         session['refresh_token'] = response_data.get("refresh_token")
 

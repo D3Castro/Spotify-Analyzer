@@ -7,6 +7,7 @@ import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Grid from '@mui/material/Grid';
 
 export default function UserDropDown({ handleLogout }) {
   const [open, setOpen] = useState(false);
@@ -39,7 +40,7 @@ export default function UserDropDown({ handleLogout }) {
   }, []);
 
   return (
-    <div>
+    <Grid container direction="row" justifyContent="flex-start" alignItems="center">
       <Button
         ref={anchorRef}
         aria-controls={open ? 'menu-list-grow' : undefined}
@@ -64,6 +65,6 @@ export default function UserDropDown({ handleLogout }) {
           </Grow>
         )}
       </Popper>
-    </div>
+    </Grid>
   );
 }
