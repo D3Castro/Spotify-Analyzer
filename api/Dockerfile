@@ -11,7 +11,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-COPY entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
-
-ENTRYPOINT ["entrypoint.sh"]
+CMD ["sh", "-c", "python3 -m flask init-db && python3 -m flask run --host=0.0.0.0"]
